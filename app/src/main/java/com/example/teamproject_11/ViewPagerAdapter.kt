@@ -8,7 +8,7 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
     val fragments = mutableListOf(
         HomeFragment(),
 //        Fragment2(),
-//        Fragment3()
+        MyVideoFragment()
 
     )
     override fun getItemCount(): Int {
