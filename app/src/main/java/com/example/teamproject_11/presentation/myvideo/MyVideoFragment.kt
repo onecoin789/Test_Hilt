@@ -1,26 +1,26 @@
-package com.example.teamproject_11
+package com.example.teamproject_11.presentation.myvideo
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.teamproject_11.R
+import com.example.teamproject_11.data.room.MyListDataBase
 import com.example.teamproject_11.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  * Use the [MyVideoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 class MyVideoFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
