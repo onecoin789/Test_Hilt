@@ -1,5 +1,6 @@
 package com.example.teamproject_11
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -96,6 +97,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openVideoDetailFromHome(videoModel: HomeVideoModel) {
-
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("ClickItem", videoModel)
+        startActivity(intent)
     }
 }

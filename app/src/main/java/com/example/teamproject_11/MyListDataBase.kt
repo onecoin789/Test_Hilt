@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.teamproject_11.home.data.HomeVideoModel
 
 
-@Database(entities = [FavoriteData::class], exportSchema = false, version = 1)
+@Database(entities = [HomeVideoModel::class], exportSchema = false, version = 1)
 abstract class MyListDataBase : RoomDatabase() {
     abstract fun getMyListDAO() : MyListDAO
 

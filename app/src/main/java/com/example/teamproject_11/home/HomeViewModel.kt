@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.teamproject_11.data.RetroClient
 import com.example.teamproject_11.YouTubeResponse
+import com.example.teamproject_11.DataType
 import com.example.teamproject_11.home.data.HomeVideoModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,37 +34,39 @@ class HomeViewModel() : ViewModel() {
 
 
     fun fetchPopularVideos() {
-        val call = apiService.getVideoInfo(
-            order = "mostPopular",
-            regionCode = "KR",
-            maxResult = 100
-        )
-        call.enqueue(object : Callback<YouTubeResponse> {
-            override fun onResponse(
-                call: Call<YouTubeResponse>,
-                response: Response<YouTubeResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val videoItems = response.body()?.items ?: emptyList()
-                    val videoModels = videoItems.map { videoItem ->
-                        HomeVideoModel(
-                            imgThumbnail = videoItem.snippet?.thumbnails?.high?.url,
-                            title = videoItem.snippet?.title,
-                            dateTime = videoItem.snippet?.publishedAt,
-                            description = videoItem.snippet?.description
-                        )
+            val call = apiService.getVideoInfo(
+                order = "mostPopular",
+                regionCode = "KR",
+                maxResult = 100
+            )
+            call.enqueue(object : Callback<YouTubeResponse> {
+                override fun onResponse(
+                    call: Call<YouTubeResponse>,
+                    response: Response<YouTubeResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val videoItems = response.body()?.items ?: emptyList()
+                        val videoModels = videoItems.map { videoItem ->
+                            HomeVideoModel(
+                                id = videoItem.id,
+                                imgThumbnail = videoItem.snippet?.thumbnails?.high?.url,
+                                title = videoItem.snippet?.title,
+                                dateTime = videoItem.snippet?.publishedAt,
+                                description = videoItem.snippet?.description,
+                                Type = DataType.MOST.viewType
+                            )
+                        }
+                        _videos.postValue(videoModels)
+                    } else {
+                        _error.postValue("Error fetching videos")
                     }
-                    _videos.postValue(videoModels)
-                } else {
-                    _error.postValue("Error fetching videos")
                 }
-            }
 
-            override fun onFailure(call: Call<YouTubeResponse>, t: Throwable) {
-                _error.postValue("Error: ${t.message}")
-            }
-        })
-    }
+                override fun onFailure(call: Call<YouTubeResponse>, t: Throwable) {
+                    _error.postValue("Error: ${t.message}")
+                }
+            })
+        }
 
 //    fun fetchGameVideo() {
 //        val call = apiService.getVideoInfo(

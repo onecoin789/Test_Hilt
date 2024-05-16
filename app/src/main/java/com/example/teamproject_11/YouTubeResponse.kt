@@ -25,7 +25,6 @@ data class Page(
 data class YouTubeVideo(
     val kind: String?,
     val etag: String?,
-    @PrimaryKey
     val id: String,
     val snippet: Snippet?
 )
@@ -99,13 +98,7 @@ val dummyData = listOf(
     ),
 )
 
-@Entity(tableName = "MyList")
-data class FavoriteData(
-    @PrimaryKey
-    val id: String,
-    val title: String?,
-    val description: String?,
-    val thumbnail: String?,
-)
+
+
 
 

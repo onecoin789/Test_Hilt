@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.teamproject_11.databinding.ItemMostBinding
+import com.example.teamproject_11.DataType
 import com.example.teamproject_11.home.data.HomeVideoModel
 
 class MostViewAdapter : RecyclerView.Adapter<MostViewAdapter.MyViewHolder>() {
@@ -35,8 +36,16 @@ class MostViewAdapter : RecyclerView.Adapter<MostViewAdapter.MyViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding = ItemMostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyViewHolder(binding)
+        val dataType = DataType.entries.find { it.viewType == viewType }
+        return when(dataType){
+            DataType.MOST ->{val binding = ItemMostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return MyViewHolder(binding)
+            }
+            else -> {
+                val binding = ItemMostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return MyViewHolder(binding)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
