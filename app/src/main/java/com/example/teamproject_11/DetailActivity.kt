@@ -1,11 +1,17 @@
 package com.example.teamproject_11
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.teamproject_11.databinding.ActivityDetailBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 
 class DetailActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -23,5 +29,24 @@ class DetailActivity : AppCompatActivity() {
         val toolBar = binding.detailToolBar
         setSupportActionBar(toolBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val listDao = MyListDataBase.getMyListDataBase(this).getMyListDAO()
+        binding.detailBtnPlay.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                dummyData.forEach {
+                    val id = it.id
+                    val title = it.snippet?.title
+                    val description = it.snippet?.description
+                    val thumbnail = it.snippet?.thumbnails?.key?.url
+                    val data = FavoriteData(id, title, description, thumbnail)
+                    listDao.insertData(data)
+                }
+            }
+        }
+        binding.detailPoster.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val list = listDao.getMyListData()
+                Log.d("룸 확인", list.toString())
+            }
+        }
     }
 }

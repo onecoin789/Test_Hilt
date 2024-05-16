@@ -1,5 +1,7 @@
 package com.example.teamproject_11
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.util.Date
 
@@ -20,10 +22,12 @@ data class Page(
 )
 
 //유튜브 전송 데이터 솓성 중 items에 해당하는 오브젝트 클래스
+
 data class YouTubeVideo(
     val kind: String?,
     val etag: String?,
-    val id: String?,
+    @PrimaryKey
+    val id: String,
     val snippet: Snippet?
 )
 
@@ -63,5 +67,13 @@ val dummyData = listOf(
     YouTubeVideo(null, null, "9", Snippet("2016-10-31", null, "ATLAS","Detail Summary", Thumbnails(Key("9",0,0)),null,"MOVIE")),
 )
 
+@Entity(tableName = "MyList")
+data class FavoriteData(
+    @PrimaryKey
+    val id: String,
+    val title: String?,
+    val description: String?,
+    val thumbnail: String?,
+)
 
 
