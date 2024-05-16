@@ -2,16 +2,11 @@ package com.example.teamproject_11
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import com.example.teamproject_11.databinding.ActivityDetailBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
 class DetailActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -36,7 +31,7 @@ class DetailActivity : AppCompatActivity() {
                     val id = it.id
                     val title = it.snippet?.title
                     val description = it.snippet?.description
-                    val thumbnail = it.snippet?.thumbnails?.key?.url
+                    val thumbnail = it.snippet?.thumbnails?.high?.url
                     val data = FavoriteData(id, title, description, thumbnail)
                     listDao.insertData(data)
                 }

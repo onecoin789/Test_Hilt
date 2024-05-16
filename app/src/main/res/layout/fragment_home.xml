@@ -7,17 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     android:clickable="false"
-    tools:context=".HomeFragment">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_Main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Home"
-        app:titleTextColor="@color/white" />
+    tools:context=".home.HomeFragment">
 
 
     <androidx.core.widget.NestedScrollView
@@ -26,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tb_Main">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_Main"
@@ -43,8 +33,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:text="Most Popular Videos"
+                android:fontFamily="@font/scbada"
+                android:textSize="33sp"
                 android:textColor="@color/white"
-                android:textSize="30sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,8 +58,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
                 android:text="Category"
+                android:fontFamily="@font/scbada"
+                android:textSize="28sp"
                 android:textColor="@color/white"
-                android:textSize="25sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_Most" />
 
@@ -90,9 +82,10 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
-                android:text="Category"
+                android:text="Game"
+                android:fontFamily="@font/scbada"
+                android:textSize="28sp"
                 android:textColor="@color/white"
-                android:textSize="25sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_Category1" />
 
@@ -115,9 +108,10 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
-                android:text="Category"
+                android:text="Music"
+                android:fontFamily="@font/scbada"
+                android:textSize="28sp"
                 android:textColor="@color/white"
-                android:textSize="25sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_Category2" />
 
@@ -131,7 +125,33 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_Main_Category2"
+                app:layout_constraintTop_toBottomOf="@+id/tv_Main_Category3"
+                tools:listitem="@layout/item_category" />
+
+            <TextView
+                android:id="@+id/tv_Main_Category4"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:text="Pet"
+                android:fontFamily="@font/scbada"
+                android:textSize="28sp"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_Category3" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_Category4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_Main_Category4"
                 tools:listitem="@layout/item_category" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
