@@ -4,18 +4,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/black"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_Main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_Tb_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textSize="35dp"
+            android:fontFamily="@font/scbada"
+            android:textColor="@color/white"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/iv_Tb_Main"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/share_main"
+            android:layout_gravity="end"
+            android:layout_marginEnd="15dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_Main"
         app:layout_constraintBottom_toTopOf="@+id/tablayout">
 
         <androidx.viewpager2.widget.ViewPager2

@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/iv_Category"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="150dp"
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
