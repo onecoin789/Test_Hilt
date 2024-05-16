@@ -1,11 +1,15 @@
 package com.example.teamproject_11
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.teamproject_11.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,6 +45,11 @@ class MyVideoFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_my_video, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -59,5 +68,16 @@ class MyVideoFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+
+
+    private fun initView() {
+        // room에 저장되어있는 내 비디오 리스트 불러오기
+        val listDao = MyListDataBase.getMyListDataBase(requireActivity()).getMyListDAO()
+        CoroutineScope(Dispatchers.IO).launch {
+            val list = listDao.getMyListData()
+            Log.d("룸 데이터 확인", list.toString())
+        }
     }
 }

@@ -55,7 +55,6 @@ class HomeFragment : Fragment() {
         gameViewAdapter = GameViewAdapter()
         musicViewAdapter = MusicViewAdapter()
         movieViewAdapter = MovieViewAdapter()
-
         initPopularVideo()
         initViewModel()
 //        initGameVideo()
