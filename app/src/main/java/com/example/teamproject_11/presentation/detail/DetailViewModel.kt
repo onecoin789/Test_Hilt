@@ -65,14 +65,14 @@ class DetailViewModel(
     }
 
 }
-class HomeViewModelFactory : ViewModelProvider.Factory {
+class DetailViewModelFactory : ViewModelProvider.Factory {
 
     private val repository = VideoApiServiceImpl(RetroClient.youtubeNetwork)
 
     override fun <T : ViewModel> create(
         modelClass: Class<T>,
         extras: CreationExtras
-    ): T = HomeViewModel(
+    ): T = DetailViewModel(
         repository
     ) as T
 }
