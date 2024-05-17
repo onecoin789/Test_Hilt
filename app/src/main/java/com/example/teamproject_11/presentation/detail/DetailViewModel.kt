@@ -31,7 +31,7 @@ class DetailViewModel(
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
-
+    private var nextPageToken : String? = null
 
     private val _data : MutableLiveData<HomeVideoModel> = MutableLiveData()
     val data : LiveData<HomeVideoModel> get() = _data
@@ -46,8 +46,10 @@ class DetailViewModel(
                     apiKey = RetroClient.API_KEY,
                     order = "mostPopular",
                     regionCode = "KR",
-                    maxResult = 20
+                    maxResult = 20,
+                    pageToken = null,
                 )
+                nextPageToken = response.nextPageToken
                 val videoModels = response.items!!.map {
                     HomeVideoModel(
                         id = it.id,
@@ -72,7 +74,8 @@ class DetailViewModel(
                     apiKey = RetroClient.API_KEY,
                     order = "mostPopular",
                     regionCode = "KR",
-                    maxResult = 20
+                    maxResult = 20,
+                    pageToken = nextPageToken
                 )
                 response.items?.forEach {
                     val extraData = HomeVideoModel(
