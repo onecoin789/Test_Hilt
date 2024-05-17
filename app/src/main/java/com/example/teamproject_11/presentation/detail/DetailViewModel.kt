@@ -1,5 +1,6 @@
 package com.example.teamproject_11.presentation.detail
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -60,6 +61,34 @@ class DetailViewModel(
                 _dummyData.postValue(videoModels)
             }.onFailure {
                 _error.postValue("Error fetching videos")
+            }
+        }
+    }
+    fun addFetchVideo(){
+        viewModelScope.launch {
+            runCatching {
+                val buffer = _dummyData.value!!.toMutableList()
+                val response = repository.getVideoInfo(
+                    apiKey = RetroClient.API_KEY,
+                    order = "mostPopular",
+                    regionCode = "KR",
+                    maxResult = 20
+                )
+                response.items?.forEach {
+                    val extraData = HomeVideoModel(
+                        id = it.id,
+                        imgThumbnail = it.snippet?.thumbnails?.high?.url,
+                        title = it.snippet?.title,
+                        dateTime = it.snippet?.publishedAt,
+                        description = it.snippet?.description,
+                        Type = DataType.MOST.viewType
+                    )
+                    buffer.add(extraData)
+                }
+                _dummyData.postValue(buffer)
+                Log.d("성공", "데이터 추가 성공")
+            }.onFailure {
+                Log.d("오류", "데이터 추가 실패")
             }
         }
     }
