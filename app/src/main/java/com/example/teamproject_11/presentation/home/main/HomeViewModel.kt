@@ -41,17 +41,17 @@ class HomeViewModel(
     val error: LiveData<String> = _error
 
 
-    
 
 
-    fun fetchPopularVideos(){
+
+    fun fetchPopularVideos() {
         viewModelScope.launch {
             runCatching {
                 val response = repository.getVideoInfo(
                     apiKey = RetroClient.API_KEY,
                     order = "mostPopular",
                     regionCode = "KR",
-                    maxResult = 10,
+                    maxResult = 10
                 )
                 val videoModels = response.items!!.map {
                     HomeVideoModel(
@@ -64,8 +64,8 @@ class HomeViewModel(
                     )
                 }
                 _videos.postValue(videoModels)
-            }.onFailure {e ->
-               Log.d("데이터 로딩 실패",e.toString())
+            }.onFailure { e ->
+                Log.d("데이터 로딩 실패", e.toString())
             }
         }
     }
