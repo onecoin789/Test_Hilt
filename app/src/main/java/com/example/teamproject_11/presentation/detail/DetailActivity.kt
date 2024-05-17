@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import com.example.teamproject_11.data.room.MyListDataBase
+import com.example.teamproject_11.room.MyListDataBase
 import com.example.teamproject_11.databinding.ActivityDetailBinding
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
 import kotlinx.coroutines.CoroutineScope

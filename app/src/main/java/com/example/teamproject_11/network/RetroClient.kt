@@ -1,7 +1,7 @@
 package com.example.teamproject_11.network
 
 import com.example.teamproject_11.BuildConfig
-import com.example.teamproject_11.data.remote.remote.VideoApiService
+import com.example.teamproject_11.data.remote.VideoApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 object RetroClient {
     private const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
-    const val API_KEY = "AIzaSyBFuwRyskATZg2Q7wdtF3QBOePjpKpfboo"
+    const val API_KEY = "AIzaSyBzwoQdjhCHKYC5pnURObLflUF4Tt3H9WM"
 
 
     private fun createOkHttpClient(): OkHttpClient {
