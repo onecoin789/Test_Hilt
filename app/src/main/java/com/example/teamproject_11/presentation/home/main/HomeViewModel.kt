@@ -26,7 +26,7 @@ class HomeViewModel(
 
 
     private val _videos = MutableLiveData<List<HomeVideoModel>>()
-    val video: LiveData<List<HomeVideoModel>> = _videos
+    val videos : LiveData<List<HomeVideoModel>> get() = _videos
 
     private val _gameVideos = MutableLiveData<List<HomeVideoModel>>()
     val gameVideo: LiveData<List<HomeVideoModel>> = _gameVideos

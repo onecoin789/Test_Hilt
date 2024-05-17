@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel.video.observe(viewLifecycleOwner) {
+        viewModel.videos.observe(viewLifecycleOwner) {
             mostViewAdapter.itemList = it
             with(binding.rvMost) {
                 adapter = mostViewAdapter
@@ -122,7 +122,7 @@ class HomeFragment : Fragment() {
                 (requireActivity() as MainActivity).openVideoDetailFromHome(videoModel)
             }
         })
-        viewModel.video.observe(viewLifecycleOwner) { videoModels ->
+        viewModel.videos.observe(viewLifecycleOwner) { videoModels ->
             mostViewAdapter.setItems(videoModels)
         }
         fetchPopularVideos()
