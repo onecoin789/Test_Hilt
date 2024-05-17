@@ -44,6 +44,7 @@ class HomeViewModel(
     val error: LiveData<String> = _error
 
 
+
     fun fetchPopularVideos() {
         viewModelScope.launch {
             runCatching {
@@ -77,7 +78,7 @@ class HomeViewModel(
                     apiKey = RetroClient.API_KEY,
                     categoryId = "20",
                     regionCode = "KR",
-                    maxResult = 10
+                    maxResult = 10,
                 )
                 val videoModels = response.items!!.map {
                     HomeVideoModel(
