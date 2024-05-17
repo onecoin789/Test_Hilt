@@ -37,10 +37,11 @@ class HomeViewModel(
     private val _petVideos = MutableLiveData<List<HomeVideoModel>>()
     val petVideo: LiveData<List<HomeVideoModel>> = _petVideos
 
+    private val _selectVideos = MutableLiveData<List<HomeVideoModel>>()
+    val selectVideos: LiveData<List<HomeVideoModel>> = _selectVideos
+
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
-
-
 
 
 
@@ -97,60 +98,87 @@ class HomeViewModel(
     }
 
     fun fetchMusicVideo() {
-    viewModelScope.launch {
-        runCatching {
-            val response = repository.getVideoInfo(
-                apiKey = RetroClient.API_KEY,
-                categoryId = "10",
-                regionCode = "KR",
-                maxResult = 10
-            )
-            val videoModels = response.items!!.map {
-                HomeVideoModel(
-                    id = it.id,
-                    imgThumbnail = it.snippet?.thumbnails?.high?.url,
-                    title = it.snippet?.title,
-                    dateTime = it.snippet?.publishedAt,
-                    description = it.snippet?.description,
-                    Type = DataType.MUSIC.viewType
+        viewModelScope.launch {
+            runCatching {
+                val response = repository.getVideoInfo(
+                    apiKey = RetroClient.API_KEY,
+                    categoryId = "10",
+                    regionCode = "KR",
+                    maxResult = 10
                 )
+                val videoModels = response.items!!.map {
+                    HomeVideoModel(
+                        id = it.id,
+                        imgThumbnail = it.snippet?.thumbnails?.high?.url,
+                        title = it.snippet?.title,
+                        dateTime = it.snippet?.publishedAt,
+                        description = it.snippet?.description,
+                        Type = DataType.MUSIC.viewType
+                    )
+                }
+                _musicVideos.postValue(videoModels)
+            }.onFailure { e ->
+                Log.d("음악 데이터 로딩 실패", e.toString())
             }
-            _musicVideos.postValue(videoModels)
-        }.onFailure { e ->
-            Log.d("음악 데이터 로딩 실패", e.toString())
         }
     }
-}
 
 
-fun fetchPetVideo() {
-    viewModelScope.launch {
-        runCatching {
-            val response = repository.getVideoInfo(
-                apiKey = RetroClient.API_KEY,
-                categoryId = "15",
-                regionCode = "KR",
-                maxResult = 10
-            )
-            val videoModels = response.items!!.map {
-                HomeVideoModel(
-                    id = it.id,
-                    imgThumbnail = it.snippet?.thumbnails?.high?.url,
-                    title = it.snippet?.title,
-                    dateTime = it.snippet?.publishedAt,
-                    description = it.snippet?.description,
-                    Type = DataType.MOVIE.viewType
+    fun fetchPetVideo() {
+        viewModelScope.launch {
+            runCatching {
+                val response = repository.getVideoInfo(
+                    apiKey = RetroClient.API_KEY,
+                    categoryId = "15",
+                    regionCode = "KR",
+                    maxResult = 10
                 )
+                val videoModels = response.items!!.map {
+                    HomeVideoModel(
+                        id = it.id,
+                        imgThumbnail = it.snippet?.thumbnails?.high?.url,
+                        title = it.snippet?.title,
+                        dateTime = it.snippet?.publishedAt,
+                        description = it.snippet?.description,
+                        Type = DataType.MOVIE.viewType
+                    )
+                }
+                _petVideos.postValue(videoModels)
+            }.onFailure { e ->
+                Log.d("펫 데이터 로딩 실패", e.toString())
             }
-            _petVideos.postValue(videoModels)
-        }.onFailure { e ->
-            Log.d("펫 데이터 로딩 실패", e.toString())
         }
     }
-}
+
+    fun fetchSelectVideo(category : String) {
+        viewModelScope.launch {
+            runCatching {
+                val response = repository.getVideoInfo(
+                    apiKey = RetroClient.API_KEY,
+                    categoryId = category,
+                    regionCode = "KR",
+                    maxResult = 20
+                )
+                val videoModels = response.items!!.map {
+                    HomeVideoModel(
+                        id = it.id,
+                        imgThumbnail = it.snippet?.thumbnails?.high?.url,
+                        title = it.snippet?.title,
+                        dateTime = it.snippet?.publishedAt,
+                        description = it.snippet?.description,
+                        Type = DataType.MOVIE.viewType
+                    )
+                }
+                _selectVideos.postValue(videoModels)
+            }.onFailure { e ->
+                Log.d("펫 데이터 로딩 실패", e.toString())
+            }
+        }
+    }
 
 
 }
+
 class HomeViewModelFactory : ViewModelProvider.Factory {
 
     private val repository = VideoApiServiceImpl(RetroClient.youtubeNetwork)
