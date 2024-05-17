@@ -34,7 +34,7 @@ class DetailActivity : AppCompatActivity() {
         settingImage()
         settingDate()
 
-//        initViewModel()
+        initViewModel()
     }
 
 
@@ -84,20 +84,20 @@ class DetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-//    private fun initViewModel() {
-//        viewModel.dummyData.observe(this) {
-//            detailAdapter = DetailAdapter()
-//            detailAdapter.itemList = it
-//            with(binding.detailRecommandList) {
-//                adapter = detailAdapter
-//                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-//            }
-//            detailAdapter.setItem(it)
-//        }
-//        fetchVideo()
-//    }
+    private fun initViewModel() {
+        viewModel.dummyData.observe(this) {
+            detailAdapter = DetailAdapter()
+            detailAdapter.itemList = it
+            with(binding.detailRecommandList) {
+                adapter = detailAdapter
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            }
+            detailAdapter.setItem(it)
+        }
+        fetchVideo()
+    }
 
-//    private fun fetchVideo() {
-//        viewModel.fetchPetVideo()
-//    }
+    private fun fetchVideo() {
+        viewModel.fetchPetVideo()
+    }
 }
