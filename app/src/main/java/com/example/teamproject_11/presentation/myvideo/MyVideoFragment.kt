@@ -1,30 +1,22 @@
 package com.example.teamproject_11.presentation.myvideo
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.teamproject_11.R
-import com.example.teamproject_11.room.MyListDataBase
-import com.example.teamproject_11.databinding.ActivityMainBinding
 import com.example.teamproject_11.databinding.FragmentMyVideoBinding
 import com.example.teamproject_11.presentation.home.main.HomeViewModel
-import com.example.teamproject_11.presentation.home.main.HomeViewModelFactory
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
 import com.example.teamproject_11.presentation.main.MainActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class MyVideoFragment : Fragment() {
     private val binding by lazy { FragmentMyVideoBinding.inflate(layoutInflater) }
     private val viewModel by lazy {
-        ViewModelProvider(requireActivity(), HomeViewModelFactory())[HomeViewModel::class.java]
+        ViewModelProvider(requireActivity(), HomeViewModel.HomeViewModelFactory())[HomeViewModel::class.java]
     }
 
     override fun onCreateView(
