@@ -42,7 +42,7 @@ class SearchFragment : Fragment() {
             override fun onClick(view: View, position: Int) {
                 // 클릭한 비디오를 디테일 액티비티로 전달
                 val videoModel = searchAdapter.items[position]
-//                (requireActivity() as MainActivity).openVideoDetailFromHome(item)
+//                (requireActivity() as MainActivity).openVideoDetailFromHome(videoModel)
             }
         })
 
