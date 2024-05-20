@@ -5,8 +5,11 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -54,7 +57,7 @@ class DetailActivity : AppCompatActivity() {
         binding.detailToolBar.title = ""
         setSupportActionBar(toolBar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-//        viewModel.getClickData(data!!)
+        viewModel.getClickData(data!!)
     }
     private fun initRoom(){
         //Room 관련 테스트용... 저장되는거 확인, 오류 캐치하는 기능 만들기
