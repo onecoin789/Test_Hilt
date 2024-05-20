@@ -1,5 +1,6 @@
 package com.example.teamproject_11.presentation.home.main
 
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,9 @@ import com.example.teamproject_11.data.repository.VideoApiServiceImpl
 import com.example.teamproject_11.domain.repository.YouTubeRepository
 import com.example.teamproject_11.presentation.main.DataType
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
+import com.example.teamproject_11.room.MyListDataBase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,6 +47,9 @@ class HomeViewModel(
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _myVideoList = MutableLiveData<List<HomeVideoModel>>()
+
+    val myVideoList: LiveData<List<HomeVideoModel>> get() = _myVideoList
 
 
     fun fetchPopularVideos() {
@@ -176,6 +183,19 @@ class HomeViewModel(
         }
     }
 
+    //룸 데이터 로딩 관련 뷰모델 함수 추가
+    fun getMyVideoList(activity : Activity){
+        val listDao = MyListDataBase.getMyListDataBase(activity).getMyListDAO()
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching {
+                val list = listDao.getMyListData()
+                _myVideoList.postValue(list)
+                Log.d("내 리스트 로딩 성공", myVideoList.toString())
+            }.onFailure {e ->
+                Log.d("내 리스트 로딩 실패", e.toString())
+            }
+        }
+    }
 
 }
 

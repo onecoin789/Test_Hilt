@@ -12,6 +12,7 @@ data class YouTubeResponse (
     @SerializedName("items") val items : List<YouTubeVideo>?,
 )
 
+
 //유튜브 전송 데이터 속성 중 PageInfo 오브젝트 클래스
 data class Page(
     val totalResults: Int?,
@@ -26,6 +27,7 @@ data class YouTubeVideo(
     val id: String,
     val snippet: Snippet?
 )
+
 
 //items의 속성 중 snippet에 해당하는 오브젝트 클래스, snippet은 해당 item의 업로드 시간 및 제목, 영상 설명 등의 속성을 가지고 있음
 data class Snippet(
