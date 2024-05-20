@@ -16,15 +16,15 @@ class DetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var itemList: MutableList<HomeVideoModel> = mutableListOf()
 
     class MyViewHolder(private val binding: ItemSearchBinding) :
-            RecyclerView.ViewHolder(binding.root) {
-                fun bind(item: HomeVideoModel) {
-                    binding.ivSearch.load(item.imgThumbnail) {
-                        crossfade(true)
-                    }
-                    binding.tvTitle.text = item.title
-                    binding.tvDate.text = item.dateTime
-                }
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: HomeVideoModel) {
+            binding.ivSearch.load(item.imgThumbnail) {
+                crossfade(true)
             }
+            binding.tvTitle.text = item.title
+            binding.tvDate.text = item.dateTime
+        }
+    }
     class MyViewProgressHolder(private val binding: ItemProgressBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
@@ -39,11 +39,10 @@ class DetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ITEM -> {val binding = ItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return MyViewHolder(binding)}
             else -> {val binding = ItemProgressBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                    return MyViewProgressHolder(binding)}
+                return MyViewProgressHolder(binding)}
         }
 
     }
-
 
     override fun getItemCount(): Int {
         return itemList.size
@@ -61,6 +60,4 @@ class DetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         this.itemList.add(HomeVideoModel("Progress", null,null,null, null, DataType.MOST.viewType))
 //        notifyDataSetChanged()
     }
-
-
 }

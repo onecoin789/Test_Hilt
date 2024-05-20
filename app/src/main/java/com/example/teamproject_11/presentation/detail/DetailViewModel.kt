@@ -7,17 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.teamproject_11.data.model.YouTubeResponse
 import com.example.teamproject_11.data.repository.VideoApiServiceImpl
 import com.example.teamproject_11.domain.repository.YouTubeRepository
 import com.example.teamproject_11.network.RetroClient
-import com.example.teamproject_11.presentation.home.main.HomeViewModel
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
+import com.example.teamproject_11.presentation.home.model.SearchVideoModel
 import com.example.teamproject_11.presentation.main.DataType
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 //디테일 액티비티에서 쓸 뷰모델
 class DetailViewModel(
@@ -36,9 +32,9 @@ class DetailViewModel(
     private val _data : MutableLiveData<HomeVideoModel> = MutableLiveData()
     val data : LiveData<HomeVideoModel> get() = _data
 
-    fun getClickData(data: HomeVideoModel){
-        _data.postValue(data)
-    }
+//    fun getClickData(data: SearchVideoModel){
+//        _data.postValue(data)
+//    }
     fun fetchPetVideo() {
         viewModelScope.launch {
             runCatching {

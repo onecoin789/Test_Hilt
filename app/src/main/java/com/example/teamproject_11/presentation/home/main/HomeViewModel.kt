@@ -1,6 +1,5 @@
 package com.example.teamproject_11.presentation.home.main
 
-import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,19 +8,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.teamproject_11.network.RetroClient
-import com.example.teamproject_11.data.model.YouTubeResponse
-import com.example.teamproject_11.data.remote.VideoApiService
 import com.example.teamproject_11.data.repository.VideoApiServiceImpl
 import com.example.teamproject_11.domain.repository.YouTubeRepository
 import com.example.teamproject_11.presentation.main.DataType
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
-import com.example.teamproject_11.room.MyListDataBase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.teamproject_11.presentation.home.model.SearchVideoModel
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.io.IOException
+import retrofit2.HttpException
 
 
 class HomeViewModel(
@@ -29,8 +23,8 @@ class HomeViewModel(
 ) : ViewModel() {
 
 
-    private val _videos = MutableLiveData<List<HomeVideoModel>>()
-    val videos : LiveData<List<HomeVideoModel>> get() = _videos
+    private val _videos = MutableLiveData<List<HomeVideoModel>?>()
+    val video: LiveData<List<HomeVideoModel>?> = _videos
 
     private val _gameVideos = MutableLiveData<List<HomeVideoModel>>()
     val gameVideo: LiveData<List<HomeVideoModel>> = _gameVideos
@@ -41,15 +35,11 @@ class HomeViewModel(
     private val _petVideos = MutableLiveData<List<HomeVideoModel>>()
     val petVideo: LiveData<List<HomeVideoModel>> = _petVideos
 
-    private val _selectVideos = MutableLiveData<List<HomeVideoModel>>()
-    val selectVideos: LiveData<List<HomeVideoModel>> = _selectVideos
-
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
-    private val _myVideoList = MutableLiveData<List<HomeVideoModel>>()
-
-    val myVideoList: LiveData<List<HomeVideoModel>> get() = _myVideoList
+    private val _searchVideos = MutableLiveData<List<SearchVideoModel>?>()
+    val searchVideo: LiveData<List<SearchVideoModel>?> = _searchVideos
 
 
     fun fetchPopularVideos() {
@@ -58,8 +48,9 @@ class HomeViewModel(
                 val response = repository.getVideoInfo(
                     apiKey = RetroClient.API_KEY,
                     order = "mostPopular",
+                    maxResult = 10,
                     regionCode = "KR",
-                    maxResult = 10
+                    pageToken = null
                 )
                 val videoModels = response.items!!.map {
                     HomeVideoModel(
@@ -83,9 +74,10 @@ class HomeViewModel(
             runCatching {
                 val response = repository.getVideoInfo(
                     apiKey = RetroClient.API_KEY,
+                    maxResult = 10,
                     categoryId = "20",
                     regionCode = "KR",
-                    maxResult = 10,
+                    pageToken = null
                 )
                 val videoModels = response.items!!.map {
                     HomeVideoModel(
@@ -109,9 +101,10 @@ class HomeViewModel(
             runCatching {
                 val response = repository.getVideoInfo(
                     apiKey = RetroClient.API_KEY,
+                    maxResult = 10,
                     categoryId = "10",
                     regionCode = "KR",
-                    maxResult = 10
+                    pageToken = null
                 )
                 val videoModels = response.items!!.map {
                     HomeVideoModel(
@@ -130,15 +123,15 @@ class HomeViewModel(
         }
     }
 
-
     fun fetchPetVideo() {
         viewModelScope.launch {
             runCatching {
                 val response = repository.getVideoInfo(
                     apiKey = RetroClient.API_KEY,
+                    maxResult = 10,
                     categoryId = "15",
                     regionCode = "KR",
-                    maxResult = 10
+                    pageToken = null
                 )
                 val videoModels = response.items!!.map {
                     HomeVideoModel(
@@ -157,56 +150,60 @@ class HomeViewModel(
         }
     }
 
-    fun fetchSelectVideo(category : String) {
+    fun searchVideos(searchQuery: String) {
         viewModelScope.launch {
             runCatching {
-                val response = repository.getVideoInfo(
+                val response = repository.searchVideo(
                     apiKey = RetroClient.API_KEY,
-                    categoryId = category,
+                    part = "snippet",
+                    type = "video",
+                    maxResult = 8, // 임시로 최대 8개 설정
                     regionCode = "KR",
-                    maxResult = 20
+                    q = searchQuery
                 )
-                val videoModels = response.items!!.map {
-                    HomeVideoModel(
-                        id = it.id,
+                val videoModels = response.items?.map {
+                    SearchVideoModel(
+                        id = it.id?.videoId ?: "",
                         imgThumbnail = it.snippet?.thumbnails?.high?.url,
                         title = it.snippet?.title,
                         dateTime = it.snippet?.publishedAt,
                         description = it.snippet?.description,
-                        Type = DataType.MOVIE.viewType
+                        type = DataType.MOVIE.viewType
                     )
-                }
-                _selectVideos.postValue(videoModels)
+                } ?: emptyList()
+                _searchVideos.postValue(videoModels)
             }.onFailure { e ->
-                Log.d("펫 데이터 로딩 실패", e.toString())
+                when (e) {
+                    is HttpException -> {
+                        val exception = null
+                        when (exception?.code) {
+                            403 -> Log.d("검색 실패", "API 호출 제한 초과: ${e.message}")
+                            404 -> Log.d("검색 실패", "리소스를 찾을 수 없음: ${e.message}")
+                            else -> Log.d("검색 실패", "HTTP 오류 발생: ${e.message}")
+                        }
+                    }
+
+                    is IOException -> {
+                        Log.d("검색 실패", "네트워크 오류: ${e.message}")
+                    }
+
+                    else -> {
+                        Log.d("검색 실패", "기타 오류: ${e.message}")
+                    }
+                }
             }
         }
     }
 
-    //룸 데이터 로딩 관련 뷰모델 함수 추가
-    fun getMyVideoList(activity : Activity){
-        val listDao = MyListDataBase.getMyListDataBase(activity).getMyListDAO()
-        CoroutineScope(Dispatchers.IO).launch {
-            runCatching {
-                val list = listDao.getMyListData()
-                _myVideoList.postValue(list)
-                Log.d("내 리스트 로딩 성공", myVideoList.toString())
-            }.onFailure {e ->
-                Log.d("내 리스트 로딩 실패", e.toString())
-            }
-        }
+    class HomeViewModelFactory : ViewModelProvider.Factory {
+
+        private val repository = VideoApiServiceImpl(videoApiService = RetroClient.youtubeNetwork)
+
+        override fun <T : ViewModel> create(
+            modelClass: Class<T>,
+            extras: CreationExtras
+        ): T = HomeViewModel(
+            repository
+        ) as T
     }
-
-}
-
-class HomeViewModelFactory : ViewModelProvider.Factory {
-
-    private val repository = VideoApiServiceImpl(RetroClient.youtubeNetwork)
-
-    override fun <T : ViewModel> create(
-        modelClass: Class<T>,
-        extras: CreationExtras
-    ): T = HomeViewModel(
-        repository
-    ) as T
 }
