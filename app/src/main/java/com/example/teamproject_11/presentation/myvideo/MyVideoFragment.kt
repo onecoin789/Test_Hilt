@@ -6,43 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.teamproject_11.R
 import com.example.teamproject_11.room.MyListDataBase
 import com.example.teamproject_11.databinding.ActivityMainBinding
+import com.example.teamproject_11.databinding.FragmentMyVideoBinding
+import com.example.teamproject_11.presentation.home.main.HomeViewModel
+import com.example.teamproject_11.presentation.home.main.HomeViewModelFactory
+import com.example.teamproject_11.presentation.home.model.HomeVideoModel
+import com.example.teamproject_11.presentation.main.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MyVideoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 class MyVideoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val binding by lazy { FragmentMyVideoBinding.inflate(layoutInflater) }
+    private val viewModel by lazy {
+        ViewModelProvider(requireActivity(), HomeViewModelFactory())[HomeViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_video, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,34 +39,22 @@ class MyVideoFragment : Fragment() {
         initView()
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyVideoFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyVideoFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+    //데이터가 갱신될 수 있도록 onResume()을 오버라이딩 해서 해당 리스트 갱신 메소드를 넣었습니다.
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMyVideoList(requireActivity())
     }
 
-
-
     private fun initView() {
-        // room에 저장되어있는 내 비디오 리스트 불러오기
-        val listDao = MyListDataBase.getMyListDataBase(requireActivity()).getMyListDAO()
-        CoroutineScope(Dispatchers.IO).launch {
-            val list = listDao.getMyListData()
-            Log.d("룸 데이터 확인", list.toString())
+        viewModel.getMyVideoList(requireActivity())
+        viewModel.myVideoList.observe(viewLifecycleOwner){
+            binding.myvideoRecyclerview.adapter = MyVideoAdapter(it, object : OnItemClick{
+                override fun onItemClick(item: HomeVideoModel) {
+                    (requireActivity() as MainActivity).openVideoDetailFromHome(item)
+                }
+            })
         }
+        binding.myvideoRecyclerview.layoutManager = GridLayoutManager(this.context, 3)
     }
 }

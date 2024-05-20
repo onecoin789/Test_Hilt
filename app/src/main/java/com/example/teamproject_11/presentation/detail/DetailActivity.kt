@@ -16,6 +16,7 @@ import coil.load
 import com.example.teamproject_11.room.MyListDataBase
 import com.example.teamproject_11.databinding.ActivityDetailBinding
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,7 +36,7 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initView()
-//        initRoom()
+        initRoom()
         settingDesc()
         settingImage()
         settingDate()
@@ -66,12 +67,13 @@ class DetailActivity : AppCompatActivity() {
                 runCatching {
                     listDao.insertData(data!!)
                 }.onSuccess {
-                    Toast.makeText(this@DetailActivity, "내 리스트에 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                   Log.d("데이터 추가 완료", "success")
+                    Snackbar.make(binding.btnAddList, "내 리스트에 추가되었습니다.", Snackbar.LENGTH_SHORT).show()
                 }
-                    .onFailure {
+                    .onFailure {e ->
+                        Snackbar.make(binding.btnAddList, "이미 리스트에 있는 동영상입니다.", Snackbar.LENGTH_SHORT).show()
                 }
                 }
-
             }
     }
     private fun settingImage(){
