@@ -8,8 +8,8 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.teamproject_11.R
 import com.example.teamproject_11.databinding.ActivityMainBinding
-import com.example.teamproject_11.presentation.home.model.HomeVideoModel
 import com.example.teamproject_11.presentation.detail.DetailActivity
+import com.example.teamproject_11.presentation.home.model.HomeVideoModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 
