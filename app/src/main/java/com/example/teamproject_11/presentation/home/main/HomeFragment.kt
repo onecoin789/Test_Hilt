@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
     private lateinit var selectViewAdapter: SelectViewAdapter
 
     private val viewModel by lazy {
-        ViewModelProvider(requireActivity(), HomeViewModelFactory())[HomeViewModel::class.java]
+        ViewModelProvider(requireActivity(), HomeViewModel.HomeViewModelFactory())[HomeViewModel::class.java]
     }
 
 
@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel.videos.observe(viewLifecycleOwner) {
+        viewModel.video.observe(viewLifecycleOwner) {
             mostViewAdapter.itemList = it
             with(binding.rvMost) {
                 adapter = mostViewAdapter
@@ -106,7 +106,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        viewModel.selectVideos.observe(viewLifecycleOwner) {
+        viewModel.selectVideo.observe(viewLifecycleOwner) {
             selectViewAdapter.itemList = it
             with(binding.rvCategory1) {
                 adapter = selectViewAdapter
@@ -122,7 +122,7 @@ class HomeFragment : Fragment() {
                 (requireActivity() as MainActivity).openVideoDetailFromHome(videoModel)
             }
         })
-        viewModel.videos.observe(viewLifecycleOwner) { videoModels ->
+        viewModel.video.observe(viewLifecycleOwner) { videoModels ->
             mostViewAdapter.setItems(videoModels)
         }
         fetchPopularVideos()
@@ -198,7 +198,7 @@ class HomeFragment : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             fetchSelectVideo()
         }
-        viewModel.selectVideos.observe(viewLifecycleOwner) { videoModels ->
+        viewModel.selectVideo.observe(viewLifecycleOwner) { videoModels ->
             selectViewAdapter.setItem(videoModels)
         }
         fetchSelectVideo()

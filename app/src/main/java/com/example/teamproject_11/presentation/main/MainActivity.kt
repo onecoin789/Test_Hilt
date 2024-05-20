@@ -16,9 +16,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-
-    private val detailActivity = DetailActivity()
-    private val bundle = Bundle()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -87,19 +84,27 @@ class MainActivity : AppCompatActivity() {
                 }
             })
             ivTbMain.setOnClickListener {
-                var snackbar = Snackbar.make(constLayout, "공유 버튼 실행", Snackbar.LENGTH_SHORT)
-                snackbar.setActionTextColor(Color.WHITE)
-                snackbar.setAction("닫기") {
-                    snackbar.dismiss()
+                val share = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "앱을 공유합니다!" +
+                                "\n\n링크: https://play.google.com/store/app/details?id=com.example.teamproject_11" +
+                                "\n\nGitHub: https://github.com/TeamProject11Media/TeamProject_Media"
+                    )
+                    type = "text/plain"
                 }
-                snackbar.show()
+                startActivity(Intent.createChooser(share, null))
+
             }
         }
     }
+
 
     fun openVideoDetailFromHome(videoModel: HomeVideoModel) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("ClickItem", videoModel)
         startActivity(intent)
+
     }
 }

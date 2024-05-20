@@ -1,5 +1,6 @@
 package com.example.teamproject_11.presentation.home.main
 
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +14,9 @@ import com.example.teamproject_11.domain.repository.YouTubeRepository
 import com.example.teamproject_11.presentation.main.DataType
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
 import com.example.teamproject_11.presentation.home.model.SearchVideoModel
+import com.example.teamproject_11.room.MyListDataBase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 import retrofit2.HttpException
@@ -23,8 +27,8 @@ class HomeViewModel(
 ) : ViewModel() {
 
 
-    private val _videos = MutableLiveData<List<HomeVideoModel>?>()
-    val video: LiveData<List<HomeVideoModel>?> = _videos
+    private val _videos = MutableLiveData<List<HomeVideoModel>>()
+    val video: LiveData<List<HomeVideoModel>> = _videos
 
     private val _gameVideos = MutableLiveData<List<HomeVideoModel>>()
     val gameVideo: LiveData<List<HomeVideoModel>> = _gameVideos
@@ -35,8 +39,14 @@ class HomeViewModel(
     private val _petVideos = MutableLiveData<List<HomeVideoModel>>()
     val petVideo: LiveData<List<HomeVideoModel>> = _petVideos
 
+    private val _selectVideos = MutableLiveData<List<HomeVideoModel>>()
+    val selectVideo: LiveData<List<HomeVideoModel>> = _selectVideos
+
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
+
+    private val _myVideoList = MutableLiveData<List<HomeVideoModel>>()
+    val myVideoList: LiveData<List<HomeVideoModel>> get() = _myVideoList
 
     private val _searchVideos = MutableLiveData<List<SearchVideoModel>?>()
     val searchVideo: LiveData<List<SearchVideoModel>?> = _searchVideos
@@ -48,7 +58,7 @@ class HomeViewModel(
                 val response = repository.getVideoInfo(
                     apiKey = RetroClient.API_KEY,
                     order = "mostPopular",
-                    maxResult = 10,
+                    maxResult = 30,
                     regionCode = "KR",
                     pageToken = null
                 )
@@ -74,7 +84,7 @@ class HomeViewModel(
             runCatching {
                 val response = repository.getVideoInfo(
                     apiKey = RetroClient.API_KEY,
-                    maxResult = 10,
+                    maxResult = 30,
                     categoryId = "20",
                     regionCode = "KR",
                     pageToken = null
@@ -101,7 +111,7 @@ class HomeViewModel(
             runCatching {
                 val response = repository.getVideoInfo(
                     apiKey = RetroClient.API_KEY,
-                    maxResult = 10,
+                    maxResult = 30,
                     categoryId = "10",
                     regionCode = "KR",
                     pageToken = null
@@ -128,7 +138,7 @@ class HomeViewModel(
             runCatching {
                 val response = repository.getVideoInfo(
                     apiKey = RetroClient.API_KEY,
-                    maxResult = 10,
+                    maxResult = 30,
                     categoryId = "15",
                     regionCode = "KR",
                     pageToken = null
@@ -149,6 +159,47 @@ class HomeViewModel(
             }
         }
     }
+
+    fun fetchSelectVideo(category : String) {
+        viewModelScope.launch {
+            runCatching {
+                val response = repository.getVideoInfo(
+                    apiKey = RetroClient.API_KEY,
+                    maxResult = 30,
+                    categoryId = category,
+                    regionCode = "KR",
+                    pageToken = null
+                )
+                val videoModels = response.items!!.map {
+                    HomeVideoModel(
+                        id = it.id,
+                        imgThumbnail = it.snippet?.thumbnails?.high?.url,
+                        title = it.snippet?.title,
+                        dateTime = it.snippet?.publishedAt,
+                        description = it.snippet?.description,
+                        Type = DataType.GAME.viewType
+                    )
+                }
+                _selectVideos.postValue(videoModels)
+            }.onFailure { e ->
+                Log.d("게임 데이터 로딩 실패", e.toString())
+            }
+        }
+    }
+
+    fun getMyVideoList(activity : Activity){
+        val listDao = MyListDataBase.getMyListDataBase(activity).getMyListDAO()
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching {
+                val list = listDao.getMyListData()
+                _myVideoList.postValue(list)
+                Log.d("내 리스트 로딩 성공", myVideoList.toString())
+            }.onFailure {e ->
+                Log.d("내 리스트 로딩 실패", e.toString())
+            }
+        }
+    }
+
 
     fun searchVideos(searchQuery: String) {
         viewModelScope.launch {
