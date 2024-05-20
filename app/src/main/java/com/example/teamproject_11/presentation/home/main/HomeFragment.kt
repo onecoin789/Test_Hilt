@@ -23,16 +23,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
+
     private lateinit var binding: FragmentHomeBinding
-
     private lateinit var mostViewAdapter: MostViewAdapter
-
     private lateinit var gameViewAdapter: GameViewAdapter
-
     private lateinit var musicViewAdapter: MusicViewAdapter
-
     private lateinit var movieViewAdapter: MovieViewAdapter
-
     private lateinit var selectViewAdapter: SelectViewAdapter
 
     private val viewModel by lazy {
@@ -58,14 +54,12 @@ class HomeFragment : Fragment() {
         movieViewAdapter = MovieViewAdapter()
         selectViewAdapter = SelectViewAdapter()
 
-
         initPopularVideo()
         initViewModel()
         initGameVideo()
         initMusicVideo()
         initPetVideo()
         initSelectVideo()
-
 
     }
 
@@ -115,6 +109,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
 
     private fun initPopularVideo() {
         mostViewAdapter.setOnItemClickListener(object : MostViewAdapter.OnItemClickListener {
