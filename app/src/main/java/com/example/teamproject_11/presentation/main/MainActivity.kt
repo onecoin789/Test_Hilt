@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 2 -> {
-                    tab.text = "My Video"
+                    tab.text = "My Videos"
                     tab.setIcon(R.drawable.video)
                 }
             }
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         1 -> {
-                            tvTbTitle.text = "Video List"
+                            tvTbTitle.text = "Search"
                         }
 
                         2 -> {
@@ -95,7 +95,6 @@ class MainActivity : AppCompatActivity() {
                     type = "text/plain"
                 }
                 startActivity(Intent.createChooser(share, null))
-
             }
         }
     }
