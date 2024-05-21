@@ -92,7 +92,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun settingDate() {
         viewModel.data.observe(this) {
-            binding.detailDate.text = it.dateTime
+            binding.detailDate.text = showDate(it.dateTime!!)
         }
     }
 
@@ -179,5 +179,9 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(Intent.createChooser(share, null))
             }
         }
+    }
+    private fun showDate(date: String) : String{
+        val str = date.substring(0,10)
+        return str
     }
 }

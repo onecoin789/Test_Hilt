@@ -10,6 +10,7 @@ import com.example.teamproject_11.presentation.home.model.HomeVideoModel
 
 interface OnItemClick{
     fun onItemClick(item: HomeVideoModel)
+    fun onItemClickToDelete(item: HomeVideoModel)
 }
 class MyVideoAdapter(private val data : List<HomeVideoModel>, private val onItemClick: OnItemClick) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -20,10 +21,13 @@ class MyVideoAdapter(private val data : List<HomeVideoModel>, private val onItem
                 crossfade(true)
             }
             binding.imageView.clipToOutline = true
-            binding.tvVideoDate.text = item.dateTime
+            binding.tvVideoDate.text = showDate(item.dateTime!!)
             binding.tvVideoName.text = item.title
             binding.myvideoContainer.setOnClickListener {
+                if(fragmentMode == 0)
                 onItemClick.onItemClick(item)
+                else
+                    onItemClick.onItemClickToDelete(item)
             }
         }
     }
@@ -42,5 +46,9 @@ class MyVideoAdapter(private val data : List<HomeVideoModel>, private val onItem
         holder.bind(data[position])
     }
 
+}
 
+private fun showDate(date: String) : String{
+    val str = date.substring(0,10)
+    return str
 }

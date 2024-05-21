@@ -1,6 +1,7 @@
 package com.example.teamproject_11.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -12,5 +13,7 @@ interface MyListDAO {
     fun insertData(data: HomeVideoModel)
     @Query("SELECT * FROM MYLIST")
     fun getMyListData() : List<HomeVideoModel>
+    @Delete
+    fun deleteData(data: HomeVideoModel)
 }
 
