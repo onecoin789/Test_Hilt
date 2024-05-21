@@ -1,11 +1,15 @@
 package com.example.teamproject_11.presentation.myvideo
 
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.teamproject_11.databinding.ItemMyVideoBinding
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
+import com.example.teamproject_11.presentation.search.SearchAdapter
 
 
 interface OnItemClick{
@@ -26,8 +30,10 @@ class MyVideoAdapter(private val data : List<HomeVideoModel>, private val onItem
             binding.myvideoContainer.setOnClickListener {
                 if(fragmentMode == 0)
                 onItemClick.onItemClick(item)
-                else
+                else {
+                    binding.myvideoContainer.setBackgroundColor(Color.rgb(255,0,0))
                     onItemClick.onItemClickToDelete(item)
+                }
             }
         }
     }
