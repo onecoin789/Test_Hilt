@@ -22,7 +22,7 @@ class DetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         crossfade(true)
                     }
                     binding.tvTitle.text = item.title
-                    binding.tvDate.text = item.dateTime
+                    binding.tvDate.text = showDate(item.dateTime!!)
                 }
             }
     class MyViewProgressHolder(private val binding: ItemProgressBinding) :
@@ -62,5 +62,9 @@ class DetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //        notifyDataSetChanged()
     }
 
+}
 
+private fun showDate(date: String) : String{
+    val str = date.substring(0,10)
+    return str
 }
