@@ -4,23 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.teamproject_11.data.model.YouTubeResponse
-import com.example.teamproject_11.data.repository.VideoApiServiceImpl
+import com.example.teamproject_11.data.remote.di.RetrofitClient
 import com.example.teamproject_11.domain.repository.YouTubeRepository
-import com.example.teamproject_11.network.RetroClient
-import com.example.teamproject_11.presentation.home.main.HomeViewModel
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
 import com.example.teamproject_11.presentation.main.DataType
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import javax.inject.Inject
 
 //디테일 액티비티에서 쓸 뷰모델
-class DetailViewModel(
+class DetailViewModel @Inject constructor(
     private val repository: YouTubeRepository
 ): ViewModel() {
 
@@ -43,7 +36,7 @@ class DetailViewModel(
         viewModelScope.launch {
             runCatching {
                 val response = repository.getVideoInfo(
-                    apiKey = RetroClient.API_KEY,
+                    apiKey = RetrofitClient.API_KEY,
                     order = "mostPopular",
                     regionCode = "KR",
                     maxResult = 20,
@@ -71,7 +64,7 @@ class DetailViewModel(
             runCatching {
                 val buffer = _dummyData.value!!.toMutableList()
                 val response = repository.getVideoInfo(
-                    apiKey = RetroClient.API_KEY,
+                    apiKey = RetrofitClient.API_KEY,
                     order = "mostPopular",
                     regionCode = "KR",
                     maxResult = 20,
@@ -98,14 +91,14 @@ class DetailViewModel(
     }
 
 }
-class DetailViewModelFactory : ViewModelProvider.Factory {
-
-    private val repository = VideoApiServiceImpl(RetroClient.youtubeNetwork)
-
-    override fun <T : ViewModel> create(
-        modelClass: Class<T>,
-        extras: CreationExtras
-    ): T = DetailViewModel(
-        repository
-    ) as T
-}
+//class DetailViewModelFactory : ViewModelProvider.Factory {
+//
+//    private val repository = VideoApiServiceImpl(RetroClient.youtubeNetwork)
+//
+//    override fun <T : ViewModel> create(
+//        modelClass: Class<T>,
+//        extras: CreationExtras
+//    ): T = DetailViewModel(
+//        repository
+//    ) as T
+//}

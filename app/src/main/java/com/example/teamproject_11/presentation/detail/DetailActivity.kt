@@ -27,7 +27,7 @@ class DetailActivity : AppCompatActivity() {
         ActivityDetailBinding.inflate(layoutInflater)
     }
     private val viewModel by lazy {
-        ViewModelProvider(this, DetailViewModelFactory())[DetailViewModel::class.java]
+        ViewModelProvider(this)[DetailViewModel::class.java]
     }
     private val data by lazy {
         intent.getParcelableExtra<HomeVideoModel>("ClickItem")

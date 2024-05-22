@@ -5,25 +5,22 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.teamproject_11.network.RetroClient
-import com.example.teamproject_11.data.repository.VideoApiServiceImpl
+import com.example.teamproject_11.data.remote.di.RetrofitClient
 import com.example.teamproject_11.domain.repository.YouTubeRepository
-import com.example.teamproject_11.presentation.main.DataType
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
-import com.example.teamproject_11.presentation.home.model.SearchVideoModel
+import com.example.teamproject_11.presentation.main.DataType
 import com.example.teamproject_11.presentation.myvideo.fragmentMode
 import com.example.teamproject_11.room.MyListDataBase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.IOException
 import retrofit2.HttpException
+import java.io.IOException
+import javax.inject.Inject
 
 
-class HomeViewModel(
+class HomeViewModel @Inject constructor(
     private val repository: YouTubeRepository
 ) : ViewModel() {
 
@@ -61,7 +58,7 @@ class HomeViewModel(
         viewModelScope.launch {
             runCatching {
                 val response = repository.getVideoInfo(
-                    apiKey = RetroClient.API_KEY,
+                    apiKey = RetrofitClient.API_KEY,
                     order = "mostPopular",
                     maxResult = 30,
                     regionCode = "KR",
@@ -88,7 +85,7 @@ class HomeViewModel(
         viewModelScope.launch {
             runCatching {
                 val response = repository.getVideoInfo(
-                    apiKey = RetroClient.API_KEY,
+                    apiKey = RetrofitClient.API_KEY,
                     maxResult = 30,
                     categoryId = "20",
                     regionCode = "KR",
@@ -115,7 +112,7 @@ class HomeViewModel(
         viewModelScope.launch {
             runCatching {
                 val response = repository.getVideoInfo(
-                    apiKey = RetroClient.API_KEY,
+                    apiKey = RetrofitClient.API_KEY,
                     maxResult = 30,
                     categoryId = "10",
                     regionCode = "KR",
@@ -142,7 +139,7 @@ class HomeViewModel(
         viewModelScope.launch {
             runCatching {
                 val response = repository.getVideoInfo(
-                    apiKey = RetroClient.API_KEY,
+                    apiKey = RetrofitClient.API_KEY,
                     maxResult = 30,
                     categoryId = "15",
                     regionCode = "KR",
@@ -169,7 +166,7 @@ class HomeViewModel(
         viewModelScope.launch {
             runCatching {
                 val response = repository.getVideoInfo(
-                    apiKey = RetroClient.API_KEY,
+                    apiKey = RetrofitClient.API_KEY,
                     maxResult = 30,
                     categoryId = category,
                     regionCode = "KR",
@@ -222,7 +219,7 @@ class HomeViewModel(
         viewModelScope.launch {
             runCatching {
                 val response = repository.searchVideo(
-                    apiKey = RetroClient.API_KEY,
+                    apiKey = RetrofitClient.API_KEY,
                     part = "snippet",
                     type = "video",
                     maxResult = 8, // 임시로 최대 8개 설정
@@ -269,7 +266,7 @@ class HomeViewModel(
             runCatching {
                 var buffer = _searchVideos.value!!.toMutableList()
                 val response = repository.searchVideo(
-                    apiKey = RetroClient.API_KEY,
+                    apiKey = RetrofitClient.API_KEY,
                     part = "snippet",
                     type = "video",
                     maxResult = 8, // 임시로 최대 8개 설정
@@ -316,16 +313,16 @@ class HomeViewModel(
     fun myvideoModeObserve(){
         _myVideoFragmentMode.postValue(fragmentMode)
     }
-
-    class HomeViewModelFactory : ViewModelProvider.Factory {
-
-        private val repository = VideoApiServiceImpl(videoApiService = RetroClient.youtubeNetwork)
-
-        override fun <T : ViewModel> create(
-            modelClass: Class<T>,
-            extras: CreationExtras
-        ): T = HomeViewModel(
-            repository
-        ) as T
-    }
+//
+//    class HomeViewModelFactory : ViewModelProvider.Factory {
+//
+//        private val repository = VideoApiServiceImpl(videoApiService = RetroClient.youtubeNetwork)
+//
+//        override fun <T : ViewModel> create(
+//            modelClass: Class<T>,
+//            extras: CreationExtras
+//        ): T = HomeViewModel(
+//            repository
+//        ) as T
+//    }
 }

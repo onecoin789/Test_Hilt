@@ -4,8 +4,9 @@ import com.example.teamproject_11.data.model.YouTubeSearchResponse
 import com.example.teamproject_11.data.remote.VideoApiService
 import com.example.teamproject_11.domain.model.toEntity
 import com.example.teamproject_11.domain.repository.YouTubeRepository
+import javax.inject.Inject
 
-class VideoApiServiceImpl(
+class VideoApiServiceImpl @Inject constructor(
     private val videoApiService: VideoApiService
 ) : YouTubeRepository{
     override suspend fun getVideoInfo(

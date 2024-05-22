@@ -23,7 +23,7 @@ var fragmentMode : Int = 0
 class MyVideoFragment : Fragment() {
     private val binding by lazy { FragmentMyVideoBinding.inflate(layoutInflater) }
     private val viewModel by lazy {
-        ViewModelProvider(requireActivity(), HomeViewModel.HomeViewModelFactory())[HomeViewModel::class.java]
+        ViewModelProvider(requireActivity())[HomeViewModel::class.java]
     }
 
     override fun onCreateView(

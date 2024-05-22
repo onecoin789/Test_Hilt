@@ -24,9 +24,7 @@ class SearchFragment : Fragment() {
     private val binding: FragmentSearchBinding
         get() = _binding!!
     private lateinit var searchAdapter: SearchAdapter
-    private val viewModel: HomeViewModel by viewModels {
-        HomeViewModel.HomeViewModelFactory()
-    }
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

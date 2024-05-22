@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.teamproject_11.R
@@ -18,10 +19,12 @@ import com.example.teamproject_11.presentation.home.main.adapter.MusicViewAdapte
 import com.example.teamproject_11.presentation.home.main.adapter.SelectViewAdapter
 import com.example.teamproject_11.presentation.home.model.HomeVideoModel
 import com.example.teamproject_11.presentation.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
@@ -31,9 +34,7 @@ class HomeFragment : Fragment() {
     private lateinit var movieViewAdapter: MovieViewAdapter
     private lateinit var selectViewAdapter: SelectViewAdapter
 
-    private val viewModel by lazy {
-        ViewModelProvider(requireActivity(), HomeViewModel.HomeViewModelFactory())[HomeViewModel::class.java]
-    }
+    private val viewModel : HomeViewModel by viewModels()
 
 
     override fun onCreateView(

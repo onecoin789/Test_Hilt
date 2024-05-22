@@ -9,7 +9,7 @@ import com.example.teamproject_11.data.model.YouTubeVideo
 import com.example.teamproject_11.data.model.YouTubeVideoItem
 import com.example.teamproject_11.presentation.main.DataType
 
-fun YouTubeResponse.toEntity() = YouTubeResponseEntity(
+fun YouTubeResponse.toEntity() = YouTubeResponse(
     kind = kind,
     etag = etag,
     nextPageToken = nextPageToken,
@@ -20,19 +20,19 @@ fun YouTubeResponse.toEntity() = YouTubeResponseEntity(
     }
 )
 
-fun Page.toEntity() = PageEntity(
+fun Page.toEntity() = Page(
     totalResults = totalResults,
     resultsPerPage = resultsPerPage
 )
 
-fun YouTubeVideo.toEntity() = YouTubeVideoEntity(
+fun YouTubeVideo.toEntity() = YouTubeVideo(
     kind = kind,
     etag = etag,
     id = id,
     snippet = snippet?.toEntity()
 )
 
-fun Snippet.toEntity() = SnippetEntity(
+fun Snippet.toEntity() = Snippet(
     publishedAt = publishedAt,
     channelId = channelId,
     title = title,
@@ -42,20 +42,20 @@ fun Snippet.toEntity() = SnippetEntity(
     categoryId = categoryId,
 )
 
-fun Thumbnails.toEntity() = ThumbnailsEntity(
+fun Thumbnails.toEntity() = Thumbnails(
     default = default.toEntity(),
     medium = medium.toEntity(),
     high = high.toEntity()
 )
 
-fun Key.toEntity() = KeyEntity(
+fun Key.toEntity() = Key(
     url = url,
     width = width,
     height = height,
 )
 
-fun YouTubeVideoItem.toEntity(): SearchVideoEntity {
-    return SearchVideoEntity(
+fun YouTubeVideoItem.toEntity(): SearchVideo {
+    return SearchVideo(
         id = id?.videoId ?: "",
         imgThumbnail = snippet?.thumbnails?.high?.url,
         title = snippet?.title,
@@ -65,6 +65,6 @@ fun YouTubeVideoItem.toEntity(): SearchVideoEntity {
     )
 }
 
-fun List<YouTubeVideoItem>.toEntityList(): List<SearchVideoEntity> {
+fun List<YouTubeVideoItem>.toEntityList(): List<SearchVideo> {
     return this.map { it.toEntity() }
 }
